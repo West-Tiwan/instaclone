@@ -6,6 +6,13 @@ var userModel = require('./users.js');
 
 passport.use(new localStratergy(userModel.authenticate()));
 
+function checkAuthentication(req,res,next){
+  if(req.isAuthenticated()){
+      next();
+  } else{
+      res.redirect("/login");
+  }
+}
 router.get('/', function (req, res) {
   res.render('index', { footer: false });
 });
@@ -27,11 +34,11 @@ router.get('/logout', function (req, res, next) {
   })
 });
 
-router.get('/feed',isLoggedIn(), function (req, res) {
+router.get('/feed',checkAuthentication(), function (req, res) {
   res.render('feed', { footer: true });
 });
 
-router.get('/profile',isLoggedIn(), function (req, res) {
+router.get('/profile',checkAuthentication(), function (req, res) {
   res.render('profile', { footer: true });
 });
 
@@ -49,24 +56,16 @@ router.post('/register', function (req, res) {
   })
 });
 
-router.get('/search',isLoggedIn(), function (req, res) {
+router.get('/search',checkAuthentication(), function (req, res) {
   res.render('search', { footer: true });
 });
 
-router.get('/edit',isLoggedIn(), function (req, res) {
+router.get('/edit',checkAuthentication(), function (req, res) {
   res.render('edit', { footer: true });
 });
 
-router.get('/upload',isLoggedIn(), function (req, res) {
+router.get('/upload',checkAuthentication(), function (req, res) {
   res.render('upload', { footer: true });
 });
 
 module.exports = router;
-
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/');
-}
