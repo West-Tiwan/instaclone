@@ -1,18 +1,16 @@
 var express = require('express');
 var router = express.Router();
+const upload = require('./multer.js');
 const passport = require('passport');
 const localStratergy = require('passport-local');
 var userModel = require('./users.js');
-
 passport.use(new localStratergy(userModel.authenticate()));
 
-function checkAuthentication(req,res,next){
-  if(req.isAuthenticated()){
-      next();
-  } else{
-      res.redirect("/login");
-  }
+function isLoggedin(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/login");
 }
+
 router.get('/', function (req, res) {
   res.render('index', { footer: false });
 });
@@ -34,13 +32,27 @@ router.get('/logout', function (req, res, next) {
   })
 });
 
-router.get('/feed',checkAuthentication(), function (req, res) {
+router.get('/feed', isLoggedin, function (req, res) {
   res.render('feed', { footer: true });
 });
 
-router.get('/profile',checkAuthentication(), function (req, res) {
-  res.render('profile', { footer: true });
+router.get('/profile', isLoggedin, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  console.log(user);
+  res.render('profile', { footer: true, user: user });
 });
+
+router.post('/update', upload.single('image'), async function (req, res) {
+  try {
+    console.log("success");
+    const user = await userModel.findOneAndUpdate({ username: req.session.passport.user }, { username: req.body.username, name: req.body.name, bio: req.body.bio }, { new: true });
+    user.profileImage = req.file.filename;
+    await user.save();
+  } catch (err) {
+    console.log(err);
+  }
+res.redirect('/profile');
+})
 
 router.post('/register', function (req, res) {
   var userdata = new userModel({
@@ -56,15 +68,16 @@ router.post('/register', function (req, res) {
   })
 });
 
-router.get('/search',checkAuthentication(), function (req, res) {
+router.get('/search', isLoggedin, function (req, res) {
   res.render('search', { footer: true });
 });
 
-router.get('/edit',checkAuthentication(), function (req, res) {
-  res.render('edit', { footer: true });
+router.get('/edit', isLoggedin, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user })
+  res.render('edit', { footer: true, user });
 });
 
-router.get('/upload',checkAuthentication(), function (req, res) {
+router.get('/upload', isLoggedin, function (req, res) {
   res.render('upload', { footer: true });
 });
 

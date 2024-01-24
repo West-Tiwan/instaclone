@@ -6,6 +6,8 @@ const userSchema = mongoose.Schema({
   password: String,
   secret: String,
   profileImage: String,
+  bio:String,
+  name:String,
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
 });
 userSchema.plugin(plm);
