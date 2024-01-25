@@ -6,7 +6,7 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
-    caption: String,
+    caption:String,
 
     date: {
         type: Date,
