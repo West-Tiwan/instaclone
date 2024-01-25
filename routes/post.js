@@ -1,17 +1,22 @@
 const mongoose = require('mongoose');
 mongoose.connect("mongodb://127.0.0.1:27017/instagram");
-const userSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
     picture: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+    },
     caption: String,
-    username: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+
     date: {
         type: Date,
         default: Date.now,
     },
-    like: [
+    likes: [
         {
-            type: mongoose.Schema.Types.ObjectId, ref: 'user',
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
         }
-    ]
+    ],
 });
-module.exports = mongoose.model("post", userSchema);
+module.exports = mongoose.model("post", postSchema);

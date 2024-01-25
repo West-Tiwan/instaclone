@@ -1,4 +1,18 @@
 <% include ./partials/header.ejs %>
+  <script>
+    window.onload = () => {
+      console.log(1);
+      let post = document.createElement("div");
+      var classes = ["post", "w-[32.5%]", "h-32", "bg-sky-100"];
+      classes.forEach((Element) => {
+        post.classList.add(...classes);
+      })
+      let area = document.getElementById("postArea");
+      area.appendChild(post);
+      console.log(post);
+      console.log(area);
+    }</script>
+
   <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
     <div class="nav flex justify-between items-center px-4">
       <h3 class="text-lg">
