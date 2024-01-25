@@ -4,6 +4,7 @@ const upload = require('./multer.js');
 const passport = require('passport');
 const localStratergy = require('passport-local');
 var userModel = require('./users.js');
+var postModel = require('./post.js');
 passport.use(new localStratergy(userModel.authenticate()));
 
 function isLoggedin(req, res, next) {
@@ -32,26 +33,28 @@ router.get('/logout', function (req, res, next) {
   })
 });
 
-router.get('/feed', isLoggedin, function (req, res) {
-  res.render('feed', { footer: true });
+router.get('/feed', isLoggedin, async function (req, res) {
+  const post = await postModel.find().populate('user');
+  res.render('feed', { footer: true, post });
 });
 
 router.get('/profile', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
-  console.log(user);
-  res.render('profile', { footer: true, user: user });
+  res.render('profile', { footer: true, user });
 });
 
 router.post('/update', upload.single('image'), async function (req, res) {
   try {
     console.log("success");
     const user = await userModel.findOneAndUpdate({ username: req.session.passport.user }, { username: req.body.username, name: req.body.name, bio: req.body.bio }, { new: true });
-    user.profileImage = req.file.filename;
+    if (req.file) {
+      user.profileImage = req.file.filename;
+    }
     await user.save();
   } catch (err) {
     console.log(err);
   }
-res.redirect('/profile');
+  res.redirect('/profile');
 })
 
 router.post('/register', function (req, res) {
@@ -80,5 +83,17 @@ router.get('/edit', isLoggedin, async function (req, res) {
 router.get('/upload', isLoggedin, function (req, res) {
   res.render('upload', { footer: true });
 });
+
+router.post('/upload', isLoggedin, upload.single('image'), async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const post = await postModel.create({
+    picture: req.file.fieldname,
+    caption: req.body.caption,
+    user: user._id,
+  })
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect('/feed');
+})
 
 module.exports = router;
