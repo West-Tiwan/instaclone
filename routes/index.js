@@ -4,6 +4,7 @@ const upload = require('./multer.js');
 const passport = require('passport');
 const localStratergy = require('passport-local');
 var userModel = require('./users.js');
+var postModel = require('./post.js');
 passport.use(new localStratergy(userModel.authenticate()));
 
 function isLoggedin(req, res, next) {
@@ -46,12 +47,14 @@ router.post('/update', upload.single('image'), async function (req, res) {
   try {
     console.log("success");
     const user = await userModel.findOneAndUpdate({ username: req.session.passport.user }, { username: req.body.username, name: req.body.name, bio: req.body.bio }, { new: true });
-    user.profileImage = req.file.filename;
+    if (req.file) {
+      user.profileImage = req.file.filename;
+    }
     await user.save();
   } catch (err) {
     console.log(err);
   }
-res.redirect('/profile');
+  res.redirect('/profile');
 })
 
 router.post('/register', function (req, res) {
@@ -79,6 +82,19 @@ router.get('/edit', isLoggedin, async function (req, res) {
 
 router.get('/upload', isLoggedin, function (req, res) {
   res.render('upload', { footer: true });
+});
+
+router.post('/upload', isLoggedin, upload.single("image"), async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  console.log(user);
+  const post = await postModel.create({
+    picture: req.file.fieldname,
+    user: user._id,
+    caption: req.body.caption,
+  })
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect("/feed");
 });
 
 module.exports = router;
