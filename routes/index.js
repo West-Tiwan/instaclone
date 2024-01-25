@@ -37,12 +37,12 @@ router.get('/feed', isLoggedin,async function (req, res) {
   const post = await postModel.find().populate('user');
   console.log(post);
   res.render('feed', { footer: true ,post});
+
 });
 
 router.get('/profile', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
-  console.log(user);
-  res.render('profile', { footer: true, user: user });
+  res.render('profile', { footer: true, user });
 });
 
 router.post('/update', upload.single('image'), async function (req, res) {
@@ -99,5 +99,17 @@ router.post('/upload', isLoggedin, upload.single("image"), async function (req, 
   console.log(post);
   res.redirect("/feed");
 });
+
+router.post('/upload', isLoggedin, upload.single('image'), async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const post = await postModel.create({
+    picture: req.file.fieldname,
+    caption: req.body.caption,
+    user: user._id,
+  })
+  user.posts.push(post._id);
+  await user.save();
+  res.redirect('/feed');
+})
 
 module.exports = router;
