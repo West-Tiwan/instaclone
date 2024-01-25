@@ -33,8 +33,10 @@ router.get('/logout', function (req, res, next) {
   })
 });
 
-router.get('/feed', isLoggedin, function (req, res) {
-  res.render('feed', { footer: true });
+router.get('/feed', isLoggedin,async function (req, res) {
+  const post = await postModel.find().populate('user');
+  console.log(post);
+  res.render('feed', { footer: true ,post});
 });
 
 router.get('/profile', isLoggedin, async function (req, res) {
@@ -71,29 +73,30 @@ router.post('/register', function (req, res) {
   })
 });
 
-router.get('/search', isLoggedin, function (req, res) {
+router.get('/search', isLoggedin,async function (req, res) {
   res.render('search', { footer: true });
 });
 
 router.get('/edit', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user })
-  res.render('edit', { footer: true, user });
+  res.render('edit', { footer: true, user:user });
 });
 
-router.get('/upload', isLoggedin, function (req, res) {
-  res.render('upload', { footer: true });
+router.get('/upload', isLoggedin,async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  res.render('upload', { footer: true,user:user });
 });
 
 router.post('/upload', isLoggedin, upload.single("image"), async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
-  console.log(user);
   const post = await postModel.create({
-    picture: req.file.fieldname,
+    picture: req.file.filename,
     user: user._id,
     caption: req.body.caption,
   })
   user.posts.push(post._id);
   await user.save();
+  console.log(post);
   res.redirect("/feed");
 });
 
