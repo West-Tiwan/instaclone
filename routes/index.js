@@ -29,7 +29,7 @@ router.post('/login',
 router.get('/logout', function (req, res, next) {
   req.logOut(function (err) {
     if (err) { return next(err); }
-    res.redirect('/');
+    res.redirect('/login');
   })
 });
 
@@ -40,7 +40,7 @@ router.get('/feed', isLoggedin,async function (req, res) {
 });
 
 router.get('/profile', isLoggedin, async function (req, res) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
+  const user = await userModel.findOne({ username: req.session.passport.user }).populate("posts");
   console.log(user);
   res.render('profile', { footer: true, user: user });
 });
