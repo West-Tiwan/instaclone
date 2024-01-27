@@ -24,7 +24,7 @@ This project is a simplified version of Instagram, aiming to replicate some of i
 
 - **Follow/Unfollow:** Users can follow and unfollow other users to stay updated on their posts.(not released yet)
 
-- **Likes and Comments:** Users can interact with posts by liking and commenting on them.(likes and comments are not working)
+- **Likes and Comments:** Users can interact with posts by liking and commenting on them.(likes are working but comments are not working)
 
 ## Installation
 
