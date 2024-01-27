@@ -16,13 +16,15 @@ This project is a simplified version of Instagram, aiming to replicate some of i
   
 - **Profile Management:** Users can update their profiles, including changing profile pictures and personal information.
 
-- **Image Upload:** Users can upload images to the platform.(not released yet)
+- **Image Upload:** Users can upload images and write captions to the platform.
+
+-**Feed** Users can see other user's posts.
+
+-**Search User** Users can search other users.
 
 - **Follow/Unfollow:** Users can follow and unfollow other users to stay updated on their posts.(not released yet)
 
-- **News Feed:** Users can view a personalized news feed based on the posts of the users they follow.(post are hard coded for now)
-
-- **Likes and Comments:** Users can interact with posts by liking and commenting on them.(interactions are hard coded for now)
+- **Likes and Comments:** Users can interact with posts by liking and commenting on them.(likes and comments are not working)
 
 ## Installation
 
@@ -48,7 +50,7 @@ This project is a simplified version of Instagram, aiming to replicate some of i
 
 5. **Visit the application in your browser:**
    ```
-   http://localhost:3000
+   http://localhost:3000/
    ```
 
 ## Usage
@@ -60,7 +62,7 @@ This project is a simplified version of Instagram, aiming to replicate some of i
    - Update your profile information and upload a profile picture.
 
 3. **Explore:**
-   - Follow other users to see their posts in your news feed.
+   - See what others are uploading.
 
 4. **Upload:**
    - Share your own photos by uploading them to the platform.
