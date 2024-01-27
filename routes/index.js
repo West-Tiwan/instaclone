@@ -87,6 +87,12 @@ router.get('/upload', isLoggedin,async function (req, res) {
   res.render('upload', { footer: true,user:user });
 });
 
+router.get('/username/:username',isLoggedin,async function(req,res){
+  const regex = new RegExp(`^${req.params.username}`,'i');
+  const users = await userModel.find({username:regex});
+  res.json(users);
+})
+
 router.post('/upload', isLoggedin, upload.single("image"), async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const post = await postModel.create({
