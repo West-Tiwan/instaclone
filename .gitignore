@@ -1,9 +1,1 @@
 node_modules
-public/images/uploads/*.jpg
-public/images/uploads/*.png
-public/images/uploads/*.gif
-public/images/uploads/*.bmp
-public/images/uploads/*.tiff
-public/images/uploads/*.webp
-public/images/uploads/*.svg
-public/images/uploads/*.raw
