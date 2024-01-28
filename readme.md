@@ -43,12 +43,18 @@ This project is a simplified version of Instagram, aiming to replicate some of i
    npm i
    ```
 
-4. **Start the application:**
+4. **Make "uploads" folder(VERY IMPORTANT):**
+   ```
+   cd public/images
+   mkdir uploads
+   ```
+
+5. **Start the application:**
    ```
    npx nodemon
    ```
 
-5. **Visit the application in your browser:**
+6. **Visit the application in your browser:**
    ```
    http://localhost:3000/
    ```
