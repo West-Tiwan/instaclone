@@ -33,11 +33,11 @@ router.get('/logout', function (req, res, next) {
   })
 });
 
-router.get('/feed', isLoggedin,async function (req, res) {
+router.get('/feed', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const post = await postModel.find().populate('user');
   console.log(post);
-  res.render('feed', { footer: true ,post,user});
+  res.render('feed', { footer: true, post, user });
 });
 
 router.get('/profile', isLoggedin, async function (req, res) {
@@ -67,30 +67,34 @@ router.post('/register', function (req, res) {
     email: req.body.email,
     secret: req.body.secret
   });
-  userModel.register(userdata, req.body.password).then(function (registereduser) {
-    passport.authenticate('local')(req, res, function () {
-      res.redirect('/profile');
-    })
-  })
+  userModel.register(userdata, req.body.password, function (err, user) {
+    if (err) {
+      console.log(JSON.stringify(err.message));
+      return res.redirect('/');
+    }
+  }).then(
+  passport.authenticate('local')(req, res, function () {
+    res.redirect('/profile');
+  }));
 });
 
-router.get('/search', isLoggedin,async function (req, res) {
+router.get('/search', isLoggedin, async function (req, res) {
   res.render('search', { footer: true });
 });
 
 router.get('/edit', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user })
-  res.render('edit', { footer: true, user:user });
+  res.render('edit', { footer: true, user: user });
 });
 
-router.get('/upload', isLoggedin,async function (req, res) {
+router.get('/upload', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
-  res.render('upload', { footer: true,user:user });
+  res.render('upload', { footer: true, user: user });
 });
 
-router.get('/username/:username',isLoggedin,async function(req,res){
-  const regex = new RegExp(`^${req.params.username}`,'i');
-  const users = await userModel.find({username:regex});
+router.get('/username/:username', isLoggedin, async function (req, res) {
+  const regex = new RegExp(`^${req.params.username}`, 'i');
+  const users = await userModel.find({ username: regex });
   res.json(users);
 })
 
@@ -107,14 +111,14 @@ router.post('/upload', isLoggedin, upload.single("image"), async function (req, 
   res.redirect("/feed");
 });
 
-router.get('/like/post/:id',isLoggedin,async function(req,res){
-  const user = await userModel.findOne({username:req.session.passport.user});
-  const post = await postModel.findOne({_id:req.params.id});
-  if(post.likes.indexOf(user._id) === -1){
+router.get('/like/post/:id', isLoggedin, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const post = await postModel.findOne({ _id: req.params.id });
+  if (post.likes.indexOf(user._id) === -1) {
     post.likes.push(user._id);
   }
-  else{
-    post.likes.splice(post.likes.indexOf(user._id),1);
+  else {
+    post.likes.splice(post.likes.indexOf(user._id), 1);
   }
   await post.save();
   res.redirect('/feed');
