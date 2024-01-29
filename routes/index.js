@@ -69,8 +69,8 @@ router.post('/register', function (req, res) {
   });
   userModel.register(userdata, req.body.password, function (err, user) {
     if (err) {
-      console.log(JSON.stringify(err.message));
-      return res.redirect('/');
+      let error1 = JSON.stringify(err.message);
+      res.redirect('/');
     }
   }).then(
   passport.authenticate('local')(req, res, function () {

@@ -16,11 +16,4 @@
       <span>Already have an account ? <a href="/login" class="text-blue-500">Log In</a></span>
     </div>
   </div>
-  <script>
-    if (error) {
-      let err = document.querySelector("#username");
-      err.classList.remove('border-zinc-800', 'border-2');
-      err.classList.add('border-red-600', 'border-8');
-    }
-  </script>
   <% include ./partials/footer.ejs %>
