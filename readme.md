@@ -43,7 +43,7 @@ This project is a simplified version of Instagram, aiming to replicate some of i
    npm i
    ```
 
-4. **Make "uploads" folder(VERY IMPORTANT):**
+4. **Make "uploads" folder:**
    ```
    cd public/images
    mkdir uploads
