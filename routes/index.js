@@ -66,18 +66,18 @@ router.post('/register', function (req, res) {
     name: req.body.name,
     email: req.body.email,
     secret: req.body.secret,
-    bio: "New User",
-    profileImage: "default.png"
+    bio:"bio of new user",
+    profileImage:"default.png"
   });
   userModel.register(userdata, req.body.password, function (err, user) {
     if (err) {
       let error1 = JSON.stringify(err.message);
       res.redirect('/');
     }
-  }).then(
-    passport.authenticate('local')(req, res, function () {
-      res.redirect('/profile');
-    }));
+    else{
+      res.redirect('/login');
+    }
+  });
 });
 
 router.get('/search', isLoggedin, async function (req, res) {
@@ -130,6 +130,7 @@ router.get('/delete/post/:id', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const post = await postModel.findOne({ _id: req.params.id });
   user.posts.splice(user.posts.indexOf(post._id), 1);
+  await postModel.deleteOne({_id:req.params.id});
   await user.save();
   res.redirect('/profile');
 });
