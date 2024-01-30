@@ -65,7 +65,9 @@ router.post('/register', function (req, res) {
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
-    secret: req.body.secret
+    secret: req.body.secret,
+    bio:"New User",
+    profileImage:"default.png"
   });
   userModel.register(userdata, req.body.password, function (err, user) {
     if (err) {
