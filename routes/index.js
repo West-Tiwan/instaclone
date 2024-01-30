@@ -51,9 +51,6 @@ router.post('/update', upload.single('image'), async function (req, res) {
   try {
     const user = await userModel.findOneAndUpdate({ username: req.session.passport.user }, { username: req.body.username, name: req.body.name, bio: req.body.bio }, { new: true });
     if (req.file) {
-      fs.unlink(`/public/images/uploads/${user.profileImage}`,function(err){
-        console.log(err);
-      });
       user.profileImage = req.file.filename;
     }
     await user.save();
