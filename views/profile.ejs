@@ -46,7 +46,8 @@
       <% user.posts.forEach(function(posts){ %>
         <div class="post w-[32.5%] h-32 bg-sky-100 overflow-hidden">
           <%= console.log(posts.picture); %>
-            <img class="h-full w-full object-cover" src="/images/uploads/<%=posts.picture%>">
+            <a href="/delete/post/<%=posts._id%>">
+            <img class="h-full w-full object-cover" src="/images/uploads/<%=posts.picture%>"></a>
         </div>
         <% }); %>
     </div>

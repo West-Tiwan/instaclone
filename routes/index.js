@@ -66,8 +66,8 @@ router.post('/register', function (req, res) {
     name: req.body.name,
     email: req.body.email,
     secret: req.body.secret,
-    bio:"New User",
-    profileImage:"default.png"
+    bio: "New User",
+    profileImage: "default.png"
   });
   userModel.register(userdata, req.body.password, function (err, user) {
     if (err) {
@@ -75,9 +75,9 @@ router.post('/register', function (req, res) {
       res.redirect('/');
     }
   }).then(
-  passport.authenticate('local')(req, res, function () {
-    res.redirect('/profile');
-  }));
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/profile');
+    }));
 });
 
 router.get('/search', isLoggedin, async function (req, res) {
@@ -124,6 +124,14 @@ router.get('/like/post/:id', isLoggedin, async function (req, res) {
   }
   await post.save();
   res.redirect('/feed');
+});
+
+router.get('/delete/post/:id', isLoggedin, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const post = await postModel.findOne({ _id: req.params.id });
+  user.posts.splice(user.posts.indexOf(post._id), 1);
+  await user.save();
+  res.redirect('/profile');
 });
 
 module.exports = router;
