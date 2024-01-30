@@ -8,7 +8,6 @@ This project is a simplified version of Instagram, aiming to replicate some of i
 - [Usage](#usage)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -16,15 +15,17 @@ This project is a simplified version of Instagram, aiming to replicate some of i
   
 - **Profile Management:** Users can update their profiles, including changing profile pictures and personal information.
 
-- **Image Upload:** Users can upload images and write captions to the platform.
+- **Post Upload:** Users can upload images and write captions to the platform.
 
 -**Feed** Users can see other user's posts.
 
--**Search User** Users can search other users.
+- **Likes and Comments:** Users can interact with posts by liking and commenting(not released yet) on them.
+
+-**Delete posts:** Users can delete their posts.
+
+-**Search Users** Users can search other users.
 
 - **Follow/Unfollow:** Users can follow and unfollow other users to stay updated on their posts.(not released yet)
-
-- **Likes and Comments:** Users can interact with posts by liking and commenting on them.(likes are working but comments are not working)
 
 ## Installation
 
@@ -75,6 +76,9 @@ This project is a simplified version of Instagram, aiming to replicate some of i
 
 5. **Engage:**
    - Like and comment on posts to interact with other users.
+
+6. **Delete:**
+   - Delete your posts if you change your mind.
 
 ## Technologies Used
 
