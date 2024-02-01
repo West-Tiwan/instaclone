@@ -131,7 +131,8 @@ router.get('/delete/post/:id', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const post = await postModel.findOne({ _id: req.params.id });
   user.posts.splice(user.posts.indexOf(post._id), 1);
-  await postModel.deleteOne({_id:req.params.id});
+  let rem = await postModel.deleteOne({_id:req.params.id});
+  fs.unlinkSync("../public/images/uploads/"+rem+".png");
   await user.save();
   res.redirect('/profile');
 });
