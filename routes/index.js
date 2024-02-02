@@ -51,6 +51,11 @@ router.post('/update', upload.single('image'), async function (req, res) {
   try {
     const user = await userModel.findOneAndUpdate({ username: req.session.passport.user }, { username: req.body.username, name: req.body.name, bio: req.body.bio }, { new: true });
     if (req.file) {
+      if (user.profileImage != 'default.png') {
+        fs.rm("public/images/uploads/" + user.profileImage, { force: true }, (err) => {
+          console.log(err);
+        });
+      }
       user.profileImage = req.file.filename;
     }
     await user.save();
@@ -132,7 +137,7 @@ router.get('/delete/post/:id', isLoggedin, async function (req, res) {
   const post = await postModel.findOne({ _id: req.params.id });
   user.posts.splice(user.posts.indexOf(post._id), 1);
   let rem = await postModel.deleteOne({ _id: req.params.id });
-  fs.rm("public/images/uploads/" + post.picture,{force:true},(err)=>{
+  fs.rm("public/images/uploads/" + post.picture, { force: true }, (err) => {
     console.log(err);
   });
   user.save();
