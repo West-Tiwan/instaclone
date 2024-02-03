@@ -89,7 +89,7 @@ router.post('/register', function (req, res) {
 
 router.get('/search', isLoggedin, async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user })
-  res.render('search', { footer: true });
+  res.render('search', { footer: true ,user:user});
 });
 
 router.get('/edit', isLoggedin, async function (req, res) {
