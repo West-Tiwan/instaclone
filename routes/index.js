@@ -8,6 +8,7 @@ var postModel = require('./post.js');
 const fs = require('fs');
 passport.use(new localStratergy(userModel.authenticate()));
 
+//function to check if user is logged in else redirerct
 function isLoggedin(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect("/login");
@@ -87,6 +88,7 @@ router.post('/register', function (req, res) {
 });
 
 router.get('/search', isLoggedin, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user })
   res.render('search', { footer: true });
 });
 
