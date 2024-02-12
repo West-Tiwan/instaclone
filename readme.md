@@ -1,6 +1,6 @@
 # Instagram Clone
 
-This project is a simplified version of Instagram, aiming to replicate some of its core features. It provides a platform for users to share photos, follow other users, and engage in a social network environment.
+This project is a simplified version of Instagram, aiming to replicate some of its core features. It provides a platform for users to share photos, follow other users, and engage in a social network.
 
 ## Table of Contents
 - [Features](#features)
